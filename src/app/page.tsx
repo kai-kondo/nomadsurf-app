@@ -1,13 +1,13 @@
 export default function Home() {
   return (
-    <main className="space-y-8 px-4 pb-12 bg-background">
+    <main className="space-y-12 px-4 pb-20 bg-background">
       {/* Hero Section */}
       <section className="relative">
         <div
-          className="w-full h-56 bg-cover bg-center rounded-3xl overflow-hidden"
-          style={{ backgroundImage: "url(/surf-hero.jpg)" }}
+          className="w-screen h-56 bg-cover bg-center -mx-4"
+          style={{ backgroundImage: "url(/surfnomad.jpg)" }}
         ></div>
-        <div className="absolute top-24 left-4 right-4 bg-white rounded-2xl shadow-card p-6 text-center -mt-10">
+        <div className="absolute top-32 left-1/2 transform -translate-x-1/2 w-full max-w-xl bg-white rounded-xl shadow-card p-4 text-center -mt-4 scale-90">
           <h1 className="text-2xl font-bold text-slate-800">
             Find your next
             <br />
@@ -18,7 +18,7 @@ export default function Home() {
       </section>
 
       {/* Popular Surf Spots */}
-      <section>
+      <section className="mt-60">
         <h2 className="text-lg font-semibold text-slate-800 mb-2">
           Popular Surf Spots
         </h2>
