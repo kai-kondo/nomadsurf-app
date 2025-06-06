@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 export default function Home() {
   return (
     <main className="space-y-12 px-4 pb-20 bg-background">
@@ -7,14 +11,19 @@ export default function Home() {
           className="w-screen h-56 bg-cover bg-center -mx-4"
           style={{ backgroundImage: "url(/surfnomad.jpg)" }}
         ></div>
-        <div className="absolute top-32 left-1/2 transform -translate-x-1/2 w-full max-w-xl bg-white rounded-xl shadow-card p-4 text-center -mt-4 scale-90">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 mx-auto w-full max-w-xl bg-white rounded-xl shadow-card p-4 text-center scale-90"
+        >
           <h1 className="text-2xl font-bold text-slate-800">
             Find your next
             <br />
             surf & work spot
           </h1>
           <button className="btn mt-4">Start exploring</button>
-        </div>
+        </motion.div>
       </section>
 
       {/* Popular Surf Spots */}
