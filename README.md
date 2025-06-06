@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+![SurfNomad Header](./public/readme.png)
 
-## Getting Started
+# 🌊 Nomad Surf
 
-First, run the development server:
+**Nomad Surf** is a mobile-first web application that helps surfers and remote workers discover surf-friendly destinations around the world. With a focus on community, events, and local work-friendly spots, Nomad Surf bridges the gap between waves and work.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🚀 Features
+
+- 🗺️ **Surf Spot Explorer**
+    
+    Discover surf spots along with nearby coworking spaces, cafes, hostels, and surf shops.
+    
+- 🧘 **Event Listings**
+    
+    Stay up-to-date with local events such as beach cleanups, surf meetups, yoga sessions, and more.
+    
+- 🔍 **Filter by Tags & Date**
+    
+    Easily browse events by category (Surf, Wellness, Music, etc.) and date (Today, This Week, etc.).
+    
+- 👥 **Community Profiles** *(coming soon)*
+    
+    Connect with fellow surf nomads, follow their journeys, and collaborate on side projects.
+    
+- 📍 **Map Integration**
+    
+    See everything visually on an interactive map—spots, events, and local amenities.
+    
+
+---
+
+## 📱 Tech Stack
+
+- **Frontend**: [Next.js](https://nextjs.org/) (App Router), [Tailwind CSS](https://tailwindcss.com/)
+- **Backend/DB**: [Supabase](https://supabase.com/)
+- **Design**: Mobile-first, minimal, ocean-inspired
+
+---
+
+## 📦 Setup
+
+1. **Clone this repository**
+    
+    ```
+    git clone https://github.com/your-username/nomad-surf.git
+    cd nomad-surf
+    ```
+    
+2. **Install dependencies**
+    
+    ```
+    npm install
+    ```
+    
+3. **Create a `.env.local` file**
+    
+    ```
+    NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+    ```
+    
+4. **Start the development server**
+    
+    ```
+    npm run dev
+    ```
+    
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+  app/
+    events/        # Event listing page
+    components/    # UI components (Hero, Footer, Header, etc.)
+    lib/           # Supabase client setup
+  public/          # Images and static assets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🌍 Vision
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+We're building **Nomad Surf** to empower a global community of surf-loving remote workers. Whether you're chasing waves in Bali or coding from a coastal café in Portugal, this app helps you find your tribe.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🤝 Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Coming soon! Contributions will be welcomed once we define contribution guidelines.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📧 Contact
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Feel free to reach out via [X/Twitter](https://twitter.com/) – DM: `@Kai`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Or follow updates on Instagram: `@nomadsurf.app`
+
+---
+
+## 🏄‍♂️ Surf. Build. Repeat.
