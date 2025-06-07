@@ -4,7 +4,7 @@ import {
   FaHome,
   FaWater,
   FaCalendarAlt,
-  FaUsers,
+  FaUser,
   FaBars,
   FaTimes,
 } from "react-icons/fa";
@@ -62,11 +62,11 @@ export default function Header() {
           Events
         </Link>
         <Link
-          href="/community"
+          href="/profile"
           className="hover:bg-sky-200 rounded-md px-3 py-1 transition flex items-center"
         >
-          <FaUsers className="mr-2" />
-          Community
+          <FaUser className="mr-2" />
+          Profile
         </Link>
         <div className="flex space-x-3 items-center md:ml-auto">
           <Link

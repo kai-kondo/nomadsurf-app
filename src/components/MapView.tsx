@@ -7,6 +7,7 @@ import { IoWaterOutline } from "react-icons/io5";
 import { WiStrongWind } from "react-icons/wi";
 import { IoClose } from "react-icons/io5";
 import { GiWaveSurfer } from "react-icons/gi";
+import { IoLaptopOutline, IoCafeOutline, IoHomeOutline } from "react-icons/io5";
 
 interface WaveData {
   wave_height: number;
@@ -20,6 +21,15 @@ interface WeatherData {
   weathercode: number;
   precipitation: number;
   windspeed: number;
+}
+
+interface Review {
+  id: string;
+  spot_id?: string;
+  location_id?: string;
+  rating: number;
+  comment: string;
+  created_at: string;
 }
 
 interface SpotMapWithWaveProps {
@@ -39,16 +49,45 @@ interface SpotMapWithWaveProps {
     lng: number;
     url: string;
   }[];
+  reviewsBySpot: { [key: string]: Review[] };
+  reviewsByLocation: { [key: string]: Review[] };
+  selectedSpot: { id: string; name: string; lat: number; lng: number } | null;
+  setSelectedSpot: (
+    spot: { id: string; name: string; lat: number; lng: number } | null
+  ) => void;
+  selectedLocation: {
+    id: string;
+    name: string;
+    lat: number;
+    lng: number;
+    type: "coworking" | "cafe" | "hostel" | "surf_shop";
+    description: string;
+    url: string;
+  } | null;
+  setSelectedLocation: (
+    location: {
+      id: string;
+      name: string;
+      lat: number;
+      lng: number;
+      type: "coworking" | "cafe" | "hostel" | "surf_shop";
+      description: string;
+      url: string;
+    } | null
+  ) => void;
 }
 
 export default function SpotMapWithWave({
   spots,
   locations,
+  reviewsBySpot,
+  reviewsByLocation,
+  selectedSpot,
+  setSelectedSpot,
+  selectedLocation,
+  setSelectedLocation,
 }: SpotMapWithWaveProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const [selectedSpot, setSelectedSpot] = useState<
-    SpotMapWithWaveProps["spots"][0] | null
-  >(null);
   const [waveData, setWaveData] = useState<WaveData | null>(null);
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [isCardVisible, setIsCardVisible] = useState(false);
@@ -57,7 +96,7 @@ export default function SpotMapWithWave({
     if (spots.length > 0 && !selectedSpot) {
       setSelectedSpot(spots[0]);
     }
-  }, [spots, selectedSpot]);
+  }, [spots, selectedSpot, setSelectedSpot]);
 
   const getWeatherDescription = (code: number): string => {
     const map: Record<number, string> = {
@@ -118,6 +157,7 @@ export default function SpotMapWithWave({
         .addTo(map)
         .getElement()
         .addEventListener("click", () => {
+          setSelectedLocation(null); // close location card if open
           setSelectedSpot(spot);
           setIsCardVisible(true);
         });
@@ -148,15 +188,20 @@ export default function SpotMapWithWave({
             el.style.backgroundImage = "url('/surficon.png')";
         }
 
-        new mapboxgl.Marker(el)
+        const marker = new mapboxgl.Marker(el)
           .setLngLat([location.lng, location.lat])
-          .setPopup(new mapboxgl.Popup().setText(location.name))
           .addTo(map);
+
+        marker.getElement().addEventListener("click", () => {
+          setSelectedSpot(null); // close spot card if open
+          setSelectedLocation(location);
+          setIsCardVisible(false); // optionally close spot card if open
+        });
       });
     }
 
     return () => map.remove();
-  }, [spots, locations]);
+  }, [spots, locations, setSelectedLocation, setSelectedSpot]);
 
   useEffect(() => {
     if (!selectedSpot) return;
@@ -269,6 +314,121 @@ export default function SpotMapWithWave({
           <div className="mt-4 text-xs text-white/50">
             Low tide: coming soon · Updated now
           </div>
+          {reviewsBySpot[selectedSpot.id] &&
+            reviewsBySpot[selectedSpot.id].length > 0 && (
+              <div className="mt-4 border-t border-white/20 pt-4">
+                <h3 className="text-sm font-semibold mb-2">Latest Reviews</h3>
+                <div className="space-y-3">
+                  {reviewsBySpot[selectedSpot.id].slice(0, 3).map((review) => (
+                    <div key={review.id} className="text-sm">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-yellow-400">
+                          {"★".repeat(review.rating)}
+                        </span>
+                        <span className="text-white/70 text-xs">
+                          {new Date(review.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <p className="text-white/90">{review.comment}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+        </div>
+      )}
+
+      {selectedLocation && (
+        <div
+          className="fixed bottom-[64px] left-4 right-4 md:left-4 md:right-auto md:w-[400px] z-50 rounded-xl p-4 shadow-lg backdrop-blur-md text-white overflow-hidden"
+          style={{
+            backgroundImage: `url('/surf_spot_images/${selectedLocation.id}.jpg')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundColor:
+              selectedLocation.type === "coworking"
+                ? "rgba(30, 64, 175, 0.85)" // deeper blue
+                : selectedLocation.type === "cafe"
+                ? "rgba(202, 138, 4, 0.85)" // richer yellow
+                : selectedLocation.type === "hostel"
+                ? "rgba(5, 150, 105, 0.85)" // teal green
+                : selectedLocation.type === "surf_shop"
+                ? "rgba(220, 38, 38, 0.85)" // vivid red
+                : "rgba(30, 41, 59, 0.9)",
+            backgroundBlendMode: "overlay",
+          }}
+        >
+          <div className="flex justify-between items-center mb-2">
+            <h2 className="text-lg font-semibold text-white">
+              {selectedLocation.name}
+            </h2>
+            <button
+              onClick={() => setSelectedLocation(null)}
+              className="text-white/70 hover:text-white"
+            >
+              <IoClose size={20} />
+            </button>
+          </div>
+          <div className="flex items-center gap-2 mb-3 text-white">
+            <span className="text-sm flex items-center gap-1">
+              {selectedLocation.type === "coworking" && (
+                <>
+                  <IoLaptopOutline className="text-white" /> Coworking Space
+                </>
+              )}
+              {selectedLocation.type === "cafe" && (
+                <>
+                  <IoCafeOutline className="text-white" /> Cafe
+                </>
+              )}
+              {selectedLocation.type === "hostel" && (
+                <>
+                  <IoHomeOutline className="text-white" /> Hostel
+                </>
+              )}
+              {selectedLocation.type === "surf_shop" && (
+                <>
+                  <GiWaveSurfer className="text-white" /> Surf Shop
+                </>
+              )}
+            </span>
+          </div>
+          <p className="text-sm text-white mb-4">
+            {selectedLocation.description}
+          </p>
+          {selectedLocation.url && (
+            <a
+              href={selectedLocation.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-4 py-2 bg-sky-500 text-white rounded-lg text-sm hover:bg-sky-600 transition"
+            >
+              View Details
+            </a>
+          )}
+          {reviewsByLocation[selectedLocation.id] &&
+            reviewsByLocation[selectedLocation.id].length > 0 && (
+              <div className="mt-4 border-t border-white/20 pt-4">
+                <h3 className="text-sm font-semibold mb-2">Latest Reviews</h3>
+                <div className="space-y-3">
+                  {reviewsByLocation[selectedLocation.id]
+                    .slice(0, 3)
+                    .map((review) => (
+                      <div key={review.id} className="text-sm">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-yellow-400">
+                            {"★".repeat(review.rating)}
+                          </span>
+                          <span className="text-white/70 text-xs">
+                            {new Date(review.created_at).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <p className="text-white/90">{review.comment}</p>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
         </div>
       )}
     </div>
