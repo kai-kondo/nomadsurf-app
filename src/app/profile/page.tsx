@@ -62,22 +62,30 @@ export default function ProfilePage() {
   };
 
   return (
-    <main className="max-w-5xl mx-auto px-4 py-8 bg-gradient-to-r from-sky-100 to-sky-50 rounded-xl">
-      <div className="rounded-xl shadow-md p-6 flex flex-col sm:flex-row gap-6 items-center">
-        <Image
-          src={profile.avatar_url || "/avatar-placeholder.png"}
-          alt="avatar"
-          width={100}
-          height={100}
-          className="rounded-full border-4 border-white shadow-lg ring-2 ring-sky-300"
-        />
+    <main className="relative max-w-5xl mx-auto px-4 py-20 bg-cover bg-center bg-[url('/profile-bg.jpg')]">
+      <div className="bg-white bg-opacity-90 rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row gap-6 items-center backdrop-blur-sm">
+        <div className="relative">
+          <Image
+            src={profile.avatar_url || "/avatar-placeholder.png"}
+            alt="avatar"
+            width={120}
+            height={120}
+            className="rounded-full border-[4px] border-white shadow-md ring-2 ring-sky-300 hover:scale-105 transition-transform duration-200"
+          />
+          {/* ステータスバッジ */}
+          <span className="absolute bottom-1 right-1 bg-green-400 border-2 border-white w-4 h-4 rounded-full" />
+        </div>
+
         <div className="text-center sm:text-left">
-          <h1 className="text-3xl font-extrabold text-slate-900">
+          <h1 className="text-4xl font-bold text-gray-800 tracking-tight leading-snug">
             {profile.username}
           </h1>
-          <p className="text-md text-sky-700 font-medium">{profile.home_region}</p>
-          <p className="mt-2 text-slate-700">{profile.bio}</p>
-          <div className="mt-3 flex gap-3 justify-center sm:justify-start">
+          <p className="text-sm text-sky-500 font-medium uppercase tracking-wide">
+            {profile.home_region}
+          </p>
+          <p className="mt-2 text-slate-600 italic">{profile.bio}</p>
+
+          <div className="mt-4 flex gap-4 justify-center sm:justify-start">
             {profile.sns_links &&
               Object.entries(profile.sns_links).map(([key, url]) => (
                 <a
@@ -85,7 +93,7 @@ export default function ProfilePage() {
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-2xl hover:scale-110 transition-transform duration-200 shadow hover:shadow-md"
+                  className="text-2xl hover:scale-125 hover:rotate-1 transition-transform duration-300 text-slate-500 hover:text-sky-600"
                 >
                   {snsIconMap[key]}
                 </a>
@@ -94,21 +102,19 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <div className="mt-10">
-        <h2 className="text-2xl font-bold mb-4 text-slate-800 border-b-2 border-sky-200 pb-1">
+      <section className="mt-10">
+        <h2 className="text-xl font-semibold mb-2 text-slate-800 border-l-4 border-sky-400 pl-3">
           Your Posts
         </h2>
-        {/* 投稿一覧表示（後で実装） */}
-        <p className="text-slate-500 text-sm">Coming soon...</p>
-      </div>
+        <div className="text-gray-500 text-sm bg-white bg-opacity-70 rounded-lg p-4 shadow-sm">Coming soon...</div>
+      </section>
 
-      <div className="mt-10">
-        <h2 className="text-2xl font-bold mb-4 text-slate-800 border-b-2 border-sky-200 pb-1">
+      <section className="mt-6">
+        <h2 className="text-xl font-semibold mb-2 text-slate-800 border-l-4 border-sky-400 pl-3">
           Joined Events
         </h2>
-        {/* 参加イベント表示（後で実装） */}
-        <p className="text-slate-500 text-sm">Coming soon...</p>
-      </div>
+        <div className="text-gray-500 text-sm bg-white bg-opacity-70 rounded-lg p-4 shadow-sm">Coming soon...</div>
+      </section>
     </main>
   );
 }
