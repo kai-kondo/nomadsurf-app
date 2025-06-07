@@ -15,7 +15,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="w-full bg-gradient-to-r from-sky-100 via-sky-200 to-sky-100 px-6 py-4 shadow-lg border-b border-sky-200 flex flex-col md:flex-row md:justify-between md:items-center relative z-50">
+    <header className="hidden md:flex w-full bg-gradient-to-r from-sky-100 via-sky-200 to-sky-100 px-6 py-4 shadow-lg border-b border-sky-200 flex-col md:flex-row md:justify-between md:items-center relative z-50">
       <div className="flex justify-between items-center w-full">
         <Link
           href="/"
