@@ -8,6 +8,18 @@ export default function SpotDetailPage() {
   const [spots, setSpots] = useState<
     { id: string; name: string; lat: number; lng: number }[]
   >([]);
+  const [locations, setLocations] = useState<
+    {
+      id: string;
+      spot_id: string;
+      type: "coworking" | "cafe" | "hostel" | "surf_shop";
+      name: string;
+      description: string;
+      lat: number;
+      lng: number;
+      url: string;
+    }[]
+  >([]);
 
   useEffect(() => {
     const fetchSpots = async () => {
@@ -23,12 +35,27 @@ export default function SpotDetailPage() {
       }
     };
 
+    const fetchLocations = async () => {
+      const { data, error } = await supabase.from("locations").select("*");
+
+      if (error) {
+        console.error("Failed to fetch locations:", error);
+      } else {
+        setLocations(data);
+      }
+    };
+
     fetchSpots();
+    fetchLocations();
   }, []);
 
   return (
     <div className="h-screen w-full relative">
-      {spots.length > 0 ? <SpotMapWithWave spots={spots} /> : <p>Loading...</p>}
+      {spots.length > 0 ? (
+        <SpotMapWithWave spots={spots} locations={locations} />
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 }

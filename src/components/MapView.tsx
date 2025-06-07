@@ -29,9 +29,22 @@ interface SpotMapWithWaveProps {
     lat: number;
     lng: number;
   }[];
+  locations: {
+    id: string;
+    spot_id: string;
+    type: "coworking" | "cafe" | "hostel" | "surf_shop";
+    name: string;
+    description: string;
+    lat: number;
+    lng: number;
+    url: string;
+  }[];
 }
 
-export default function SpotMapWithWave({ spots }: SpotMapWithWaveProps) {
+export default function SpotMapWithWave({
+  spots,
+  locations,
+}: SpotMapWithWaveProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const [selectedSpot, setSelectedSpot] = useState<
     SpotMapWithWaveProps["spots"][0] | null
@@ -40,7 +53,6 @@ export default function SpotMapWithWave({ spots }: SpotMapWithWaveProps) {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [isCardVisible, setIsCardVisible] = useState(false);
 
-  // 初期状態で selectedSpot が null のため、spots が読み込まれた時点で selectedSpot に初期値をセット
   useEffect(() => {
     if (spots.length > 0 && !selectedSpot) {
       setSelectedSpot(spots[0]);
@@ -75,7 +87,7 @@ export default function SpotMapWithWave({ spots }: SpotMapWithWaveProps) {
   };
 
   useEffect(() => {
-    if (!mapContainer.current) return;
+    if (!mapContainer.current || !locations) return;
 
     const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
     if (!token) {
@@ -94,9 +106,9 @@ export default function SpotMapWithWave({ spots }: SpotMapWithWaveProps) {
 
     spots.forEach((spot) => {
       const el = document.createElement("div");
-      el.style.backgroundImage = "url('/surficon.png')";
-      el.style.width = "32px";
-      el.style.height = "32px";
+      el.style.backgroundImage = "url('/icons/surfspot.png')";
+      el.style.width = "48px";
+      el.style.height = "48px";
       el.style.backgroundSize = "cover";
       el.style.borderRadius = "50%";
       el.style.boxShadow = "0 0 6px rgba(0, 0, 0, 0.3)";
@@ -111,8 +123,40 @@ export default function SpotMapWithWave({ spots }: SpotMapWithWaveProps) {
         });
     });
 
+    if (locations && Array.isArray(locations)) {
+      locations.forEach((location) => {
+        const el = document.createElement("div");
+        el.style.backgroundSize = "cover";
+        el.style.width = "40px";
+        el.style.height = "40px";
+        el.style.borderRadius = "50%";
+
+        switch (location.type) {
+          case "coworking":
+            el.style.backgroundImage = "url('/icons/coworking.png')";
+            break;
+          case "cafe":
+            el.style.backgroundImage = "url('/icons/cafe.png')";
+            break;
+          case "hostel":
+            el.style.backgroundImage = "url('/icons/hostel.png')";
+            break;
+          case "surf_shop":
+            el.style.backgroundImage = "url('/icons/surfshop.png')";
+            break;
+          default:
+            el.style.backgroundImage = "url('/surficon.png')";
+        }
+
+        new mapboxgl.Marker(el)
+          .setLngLat([location.lng, location.lat])
+          .setPopup(new mapboxgl.Popup().setText(location.name))
+          .addTo(map);
+      });
+    }
+
     return () => map.remove();
-  }, [spots]);
+  }, [spots, locations]);
 
   useEffect(() => {
     if (!selectedSpot) return;
@@ -178,11 +222,6 @@ export default function SpotMapWithWave({ spots }: SpotMapWithWaveProps) {
     };
     fetchWeather();
   }, [selectedSpot]);
-
-  console.log("spots:", spots);
-  console.log("selectedSpot:", selectedSpot);
-  console.log("waveData:", waveData);
-  console.log("weather:", weather);
 
   return (
     <div className="h-screen w-full relative">
