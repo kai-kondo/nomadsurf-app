@@ -1,5 +1,17 @@
 ![SurfNomad Header](./public/readme.png)
 
+<p align="center">
+  <a href="https://github.com/kai-kondo">
+    <img src="https://img.shields.io/github/followers/kai-kondo?label=GitHub&style=social" />
+  </a>
+  <a href="https://x.com/KSurfnomad">
+    <img src="https://img.shields.io/badge/X-1DA1F2?style=flat&logo=x&logoColor=white" />
+  </a>
+  <a href="https://www.instagram.com/kai_surfnomad">
+    <img src="https://img.shields.io/badge/Instagram-E4405F?style=flat&logo=instagram&logoColor=white" />
+  </a>
+</p>
+
 # 🌊 Nomad Surf
 
 **Nomad Surf** is a mobile-first web application that helps surfers and remote workers discover surf-friendly destinations around the world. With a focus on community, events, and local work-friendly spots, Nomad Surf bridges the gap between waves and work.
